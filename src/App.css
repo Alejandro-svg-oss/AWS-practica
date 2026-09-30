@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0f172a;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.app-container {
+  min-height: 100vh;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.app-title {
+  font-size: 2.5rem;
+  color: #38bdf8;
+  margin: 0 0 10px 0;
+}
+
+.app-subtitle {
+  color: #94a3b8;
+  margin: 0;
+}
+
+.cards-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
