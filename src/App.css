@@ -1,36 +1,96 @@
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #0f172a;
-  color: #ffffff;
-  font-family: system-ui, -apple-system, sans-serif;
-}
-
-.app-container {
-  min-height: 100vh;
-  padding: 40px 20px;
+* {
   box-sizing: border-box;
 }
 
-.app-header {
+.container {
+  max-width: 650px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  font-size: 1.8rem;
+  line-height: 1.3; /* Corrige el texto encimado */
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
+  color: #1a1a1a;
 }
 
-.app-title {
-  font-size: 2.5rem;
-  color: #38bdf8;
-  margin: 0 0 10px 0;
+h2 {
+  font-size: 1.3rem;
+  margin-top: 35px;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #333333;
 }
 
-.app-subtitle {
-  color: #94a3b8;
-  margin: 0;
-}
-
-.cards-grid {
+.muro-form {
   display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #0066ff;
+}
+
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.btn-submit {
+  background-color: #0066ff;
+  color: #ffffff;
+  border: none;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+  background-color: #0052cc;
+}
+
+.mensaje-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 12px;
+  text-align: left;
+}
+
+.mensaje-fecha {
+  display: block;
+  color: #64748b;
+  font-size: 0.85rem;
+  margin-top: 2px;
+  margin-bottom: 8px;
+}
+
+.mensaje-texto {
+  margin: 0;
+  color: #334155;
+  white-space: pre-wrap;
+  word-break: break-word;
 }

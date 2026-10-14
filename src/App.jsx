@@ -3,28 +3,85 @@ import { API_URL } from './config';
 import './App.css';
 
 function App() {
-  const [data, setData] = useState(null);
+  const [mensajes, setMensajes] = useState([]);
+  const [nombre, setNombre] = useState('');
+  const [contenido, setContenido] = useState('');
+
+  // Consultar todos los mensajes al cargar la aplicación
+  const fetchMensajes = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/mensajes`);
+      const data = await res.json();
+      setMensajes(data);
+    } catch (err) {
+      console.error('Error al cargar mensajes desde la API:', err);
+    }
+  };
 
   useEffect(() => {
-    fetch(`${API_URL}/api/status`)
-      .then((res) => res.json())
-      .then((info) => setData(info))
-      .catch((err) => console.error("Error conectando con EC2:", err));
+    fetchMensajes();
   }, []);
 
+  // Enviar un nuevo mensaje al backend
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!nombre || !contenido) return;
+
+    try {
+      await fetch(`${API_URL}/api/mensajes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, contenido })
+      });
+
+      // Limpiar formulario y refrescar lista de mensajes
+      setNombre('');
+      setContenido('');
+      fetchMensajes();
+    } catch (err) {
+      console.error('Error al guardar el mensaje en RDS:', err);
+    }
+  };
+
   return (
-    <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto' }}>
-      <h1>Frontend (S3) + Backend (EC2) 🚀</h1>
-      <div style={{ background: '#f0f0f0', padding: '15px', borderRadius: '8px', color: '#333' }}>
-        <h3>Estado del Servidor</h3>
-        {data ? (
-          <div>
-            <p><strong>Estado:</strong> {data.status} ✅</p>
-            <p><strong>Sistema:</strong> {data.os}</p>
-            <p><strong>Hora actual:</strong> {data.timestamp}</p>
-          </div>
+    <div className="container">
+      <h1>Muro de Mensajes - AWS Cloud Architecture</h1>
+
+      <form onSubmit={handleSubmit} className="muro-form">
+        <input
+          type="text"
+          placeholder="Tu Nombre"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          className="form-input"
+          required
+        />
+        <textarea
+          placeholder="Escribe tu mensaje..."
+          value={contenido}
+          onChange={(e) => setContenido(e.target.value)}
+          className="form-textarea"
+          required
+        />
+        <button type="submit" className="btn-submit">
+          Guardar en RDS
+        </button>
+      </form>
+
+      <h2>Registros Almacenados en Amazon RDS</h2>
+      <div>
+        {mensajes.length === 0 ? (
+          <p>No hay mensajes registrados aún en la base de datos.</p>
         ) : (
-          <p>Cargando datos desde el servidor en EC2...</p>
+          mensajes.map((m) => (
+            <div key={m.id} className="mensaje-card">
+              <strong>{m.nombre}</strong>
+              <small className="mensaje-fecha">
+                ({new Date(m.fecha).toLocaleString()})
+              </small>
+              <p className="mensaje-texto">{m.contenido}</p>
+            </div>
+          ))
         )}
       </div>
     </div>
