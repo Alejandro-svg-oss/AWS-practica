@@ -1,0 +1,19 @@
+[Unit]
+Description=API clientes y cotizaciones
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/opt/mauriciochavez-parcial-3
+EnvironmentFile=/etc/mauriciochavez-parcial-3.env
+ExecStartPre=/usr/bin/node /opt/mauriciochavez-parcial-3/database/init.js
+ExecStart=/usr/bin/node /opt/mauriciochavez-parcial-3/server/index.js
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
