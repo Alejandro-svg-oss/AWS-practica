@@ -17,7 +17,7 @@ Para compilar el frontend, configura `VITE_API_URL` con la URL pública de la AP
 
 El backend está instalado en EC2, en `/opt/mauriciochavez-parcial-3`. Al conectarte por SSH se abre inicialmente la carpeta personal de `ubuntu`, por lo que el proyecto no aparecerá allí. El frontend está publicado en S3.
 
-1. Inicia el laboratorio de AWS Academy. En la consola de EC2, región `us-east-1`, selecciona `MauricioChavez-PARCIAL-3-ec2` y confirma que esté **Running**. Copia su **Public IPv4 address** actual; puede cambiar al detener e iniciar la instancia. Comprueba también en RDS que `mauriciochavez-parcial-3-rds` esté **Available**.
+1. Inicia el laboratorio de AWS Academy. En la consola de EC2, región `us-east-1`, selecciona `MauricioChavez-PARCIAL-3-ec2` y confirma que esté **Running**. Copia su **Public IPv4 address** actual. Mientras conserve asociada su Elastic IP, la dirección permanece estable al detener e iniciar la instancia. Comprueba también en RDS que `mauriciochavez-parcial-3-rds` esté **Available**.
 2. En PowerShell de tu computadora, conecta con la clave privada del proyecto. Sustituye `RUTA_A_LA_CLAVE.pem` por la ruta real de tu archivo y `IP_PUBLICA_EC2` por la IP consultada en el paso anterior:
 
    ```powershell
@@ -48,9 +48,11 @@ El backend está instalado en EC2, en `/opt/mauriciochavez-parcial-3`. Al conect
 
    `localhost` aquí se refiere a la propia EC2 porque el comando se ejecuta dentro de ella. Si la base RDS no está disponible, el servicio puede fallar al iniciar y reintentará. Si cambió la IP pública, sigue también la sección siguiente para actualizar el frontend en S3.
 
-## Actualizar el sitio después de reiniciar EC2
+## IP fija y actualización del sitio
 
-Al detener e iniciar la EC2, AWS puede asignarle una IP pública diferente. En ese caso, el sitio de S3 necesita volver a publicarse con la nueva dirección. El script de este proyecto obtiene la IP actual, comprueba que la API responde y publica el frontend actualizado. La compilación bloquea el uso accidental de `localhost` como API pública.
+La EC2 tiene asociada la Elastic IP `52.71.137.82` (`MauricioChavez-PARCIAL-3-eip`), que debe mantenerse estable al detener e iniciar la misma instancia. Si se libera o desvincula la dirección, se reemplaza la instancia o se asigna otra IP, el sitio de S3 necesitará volver a publicarse. El script de este proyecto obtiene la IP actual, comprueba que la API responde y publica el frontend actualizado. La compilación bloquea el uso accidental de `localhost` como API pública.
+
+La Elastic IP cuesta aproximadamente USD 0.005 por hora, incluso con la instancia detenida, mientras siga reservada. Al liberarla deja de estar garantizada la misma IP. La IP fija no impide que AWS Academy detenga EC2 ni enciende RDS automáticamente.
 
 1. En AWS Academy, inicia el laboratorio. En la consola de AWS, región `us-east-1`, comprueba que la EC2 `MauricioChavez-PARCIAL-3-ec2` esté **Running** y que la RDS `mauriciochavez-parcial-3-rds` esté **Available**. Espera unos minutos si acaban de iniciar. El script no inicia estos recursos.
 2. Necesitas Windows, Node.js con npm, AWS CLI y las dependencias del proyecto. Si acabas de descargar el repositorio, abre PowerShell y ejecuta:
